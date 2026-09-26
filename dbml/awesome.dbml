@@ -1,0 +1,239 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Project "Pendataan Penyu" {
+  database_type: 'cockroachdb'
+  Note: ''
+}
+
+Table User {
+  id BigInt [pk, increment]
+  idUser String [unique, not null]
+  nomerTelp String [unique]
+  username String [unique, not null]
+  name String [not null]
+  password String [not null]
+  admin Boolean [default: false]
+  idTempat String [not null]
+  InkubasiPenyu InkubasiPenyu [not null]
+  Pelepasan Pelepasan [not null]
+  PenyuMati PenyuMati [not null]
+  PenyuNaik PenyuNaik [not null]
+  TelurDikerami TelurDikerami [not null]
+  TelurMenetas TelurMenetas [not null]
+  tempat TempatKonservasi [not null]
+}
+
+Table TempatKonservasi {
+  id BigInt [pk, increment]
+  idTempat String [unique, not null]
+  nama String [not null]
+  alamat String [not null]
+  foto String
+  user User [not null]
+}
+
+Table JenisPenyu {
+  id BigInt [pk, increment]
+  idJenisPenyu String [unique, not null]
+  nama String [not null]
+  namaIlmiah String
+  penyuDiinkubasi InkubasiPenyu [not null]
+  penyuMati PenyuMati [not null]
+  penyuMenetas TelurMenetas [not null]
+}
+
+Table PenyuNaik {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  dikerami Boolean [default: false]
+  jumlahPenyu Int [default: 0]
+  penyuBertelur Boolean [not null, default: true]
+  telurDiselamatkan Int
+  tanggalData DateTime [not null]
+  Keterangan String
+  create DateTime [default: `now()`]
+  update DateTime
+  idpenanggungJawab String
+  idZona BigInt
+  zona Zona
+  user User
+  telurdikerami TelurDikerami [not null]
+}
+
+Table TelurDikerami {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  menetas Boolean [default: false]
+  telurBaik Int
+  tanggalData DateTime [not null]
+  Keterangan String
+  create DateTime [default: `now()`, not null]
+  update DateTime
+  idpenanggungJawab String
+  idPenyuNaik String
+  penyuNaik PenyuNaik
+  user User
+  telurMenetas TelurMenetas [not null]
+}
+
+Table TelurMenetas {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  diinkubasi Boolean [default: false]
+  telurMenetas Int
+  telurRusak Int
+  tanggalData DateTime [not null]
+  Keterangan String
+  create DateTime [default: `now()`, not null]
+  update DateTime
+  idpenanggungJawab String
+  idPenyu String
+  idPenyuDikerami String [unique]
+  Inkubasi InkubasiPenyu [not null]
+  telurDikerami TelurDikerami
+  penyu JenisPenyu
+  user User
+}
+
+Table InkubasiPenyu {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  JumlahTukik Int [not null]
+  tanggalData DateTime [not null]
+  Keterangan String
+  create DateTime [default: `now()`, not null]
+  update DateTime
+  idpenanggungJawab String
+  idInkubator String [not null]
+  idPenyu String
+  idPenyuMenetas String [unique]
+  inkubator Inkubator [not null]
+  penyuMenetas TelurMenetas
+  penyu JenisPenyu
+  user User
+}
+
+Table PenyuMati {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  penyuMati Int
+  tanggalData DateTime [not null]
+  Keterangan String
+  create DateTime [default: `now()`, not null]
+  update DateTime
+  idpenanggungJawab String
+  idPenyu String
+  idInkubator String
+  Inkubasi Inkubator
+  penyu JenisPenyu
+  user User
+}
+
+Table Pelepasan {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  JumlahTukik Int [not null]
+  tanggalData DateTime [not null]
+  Keterangan String
+  create DateTime [default: `now()`, not null]
+  update DateTime [not null]
+  idpenanggungJawab String
+  idInkubator String
+  Inkubasi Inkubator
+  user User
+}
+
+Table Inkubator {
+  id BigInt [pk, increment]
+  idInkubator String [unique, not null]
+  namaInkubator String [not null]
+  tukikHidup Int [default: 0]
+  tukikMati Int [default: 0]
+  berfungsi Boolean [not null, default: true]
+  keterangan String
+  tukikAda Boolean [not null, default: false]
+  penyuInkubasi InkubasiPenyu [not null]
+  pelepasan Pelepasan [not null]
+  penyumati PenyuMati [not null]
+}
+
+Table Zona {
+  id BigInt [pk, increment]
+  idZona String [unique, not null]
+  nama String [not null]
+  keterangan String [not null]
+  PenyuNaik PenyuNaik [not null]
+}
+
+Table PenyimpananBulanan {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  Bulan Int [not null]
+  Tahun Int [not null]
+  PenyuNaikTakBertelur Int [not null]
+  PenyuNaikBertelur Int [not null]
+  TotalTelurDiselamatkan Int [not null]
+  TotalTelurMenetas Int [not null]
+  TotalTelurTakMenetas Int [not null]
+  TotalTukikMati Int [not null]
+  TotalTukikDilepaskan Int [not null]
+  TanggalDibuat DateTime [default: `now()`, not null]
+  TanggalUpdate DateTime
+  Tempat String [not null]
+  idUser String [not null]
+  Logs Json
+}
+
+Table PenyimpananTahunan {
+  id BigInt [pk, increment]
+  idDok String [unique, not null]
+  Tahun Int [not null]
+  PenyuNaikTakBertelur Int [not null]
+  PenyuNaikBertelur Int [not null]
+  TotalTelurDiselamatkan Int [not null]
+  TotalTelurMenetas Int [not null]
+  TotalTelurTakMenetas Int [not null]
+  TotalTukikMati Int [not null]
+  TotalTukikDilepaskan Int [not null]
+  TanggalDibuat DateTime [default: `now()`, not null]
+  TanggalUpdate DateTime
+  Tempat String [not null]
+  idUser String [not null]
+  Logs Json
+}
+
+Ref: User.idTempat > TempatKonservasi.idTempat
+
+Ref: PenyuNaik.idZona > Zona.id
+
+Ref: PenyuNaik.idpenanggungJawab > User.idUser
+
+Ref: TelurDikerami.idPenyuNaik > PenyuNaik.idDok
+
+Ref: TelurDikerami.idpenanggungJawab > User.idUser
+
+Ref: TelurMenetas.idPenyuDikerami > TelurDikerami.idDok
+
+Ref: TelurMenetas.idPenyu > JenisPenyu.idJenisPenyu
+
+Ref: TelurMenetas.idpenanggungJawab > User.idUser
+
+Ref: InkubasiPenyu.idInkubator > Inkubator.idInkubator
+
+Ref: InkubasiPenyu.idPenyuMenetas > TelurMenetas.idDok
+
+Ref: InkubasiPenyu.idPenyu > JenisPenyu.idJenisPenyu
+
+Ref: InkubasiPenyu.idpenanggungJawab > User.idUser
+
+Ref: PenyuMati.idInkubator > Inkubator.idInkubator
+
+Ref: PenyuMati.idPenyu > JenisPenyu.idJenisPenyu
+
+Ref: PenyuMati.idpenanggungJawab > User.idUser
+
+Ref: Pelepasan.idInkubator > Inkubator.idInkubator
+
+Ref: Pelepasan.idpenanggungJawab > User.idUser

@@ -1,0 +1,14 @@
+onlyBuiltDependencies:
+  - '@firebase/util'
+  - '@parcel/watcher'
+  - '@prisma/engines'
+  - '@tsparticles/engine'
+  - '@vercel/speed-insights'
+  - canvas
+  - core-js
+  - core-js-pure
+  - esbuild
+  - protobufjs
+  - puppeteer
+  - sharp
+  - unrs-resolver

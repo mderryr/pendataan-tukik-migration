@@ -1,0 +1,85 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:16
+    container_name: local_pgdb1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: derry
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: pendataan-penyu
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: derry.ramadhan3@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 12345678
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  
+  cockroachdb:
+    image: cockroachdb/cockroach
+    container_name: local_crdb
+    restart: always
+    environment:
+      COCKROACH_DATABASE : DATAALL
+      COCKROACH_USER : derry
+      COCKROACH_PASSWORD : 12345678
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    command: start-single-node --http-addr=localhost:8080 --insecure
+    volumes:
+      - local_crdata1:/cockroach/cockroach-data
+    hostname: roach-single
+
+  cockroachdb2:
+    image: cockroachdb/cockroach
+    container_name: local_crdb2
+    restart: always
+    ports:
+      - "26258:26258"
+      - "8081:8081"
+    environment:
+      COCKROACH_DATABASE: ANOTHER
+      COCKROACH_USER: derry
+      COCKROACH_PASSWORD: 12345678
+    volumes:
+      - local_crdata2:/cockroach/cockroach-data
+    command: start --insecure --store=node2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+    hostname: roach-single
+    depends_on:
+      - cockroachdb
+
+  cockroachdb3:
+    image: cockroachdb/cockroach
+    container_name: local_crdb3
+    restart: always
+    ports:
+      - "26259:26259"
+      - "8082:8082"
+    environment:
+      COCKROACH_DATABASE: OTHER
+      COCKROACH_USER: derry
+      COCKROACH_PASSWORD: 12345678
+    volumes:
+      - local_crdata3:/cockroach/cockroach-data
+    command: start --insecure --store=node3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
+    hostname: roach-single
+    depends_on:
+      - cockroachdb
+      - cockroachdb2
+volumes:
+  local_pgdata:
+  local_crdata1:
+  local_crdata2:
+  local_crdata3:
+  pgadmin-data:
