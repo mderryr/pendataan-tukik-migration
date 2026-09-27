@@ -43,3 +43,9 @@ next-env.d.ts
 # Million Lint
 .million
 .qodo
+
+war-machine-lenovo
+war-machine-lenovo.pub
+
+.kiro/*
+.information-ai/*
