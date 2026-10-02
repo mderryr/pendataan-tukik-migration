@@ -1,151 +1,197 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import {
+  ClipboardList,
+  FileText,
+  Home,
+  Info,
+  LogIn,
+  Menu as MenuIcon,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import Divider from "@mui/material/Divider";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { Button } from "@/components/ui/button";
 import Icon from "@/app/logo-sipenyu.png";
-import { useRouter } from 'next/navigation'
+import { cn } from "@/utils/cn-tools";
 
+const navLinks: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: "/", label: "Beranda", icon: Home },
+  { href: "/pendataan", label: "Pendataan", icon: ClipboardList },
+  { href: "/laporan", label: "Laporan Kegiatan", icon: FileText },
+  { href: "/tentang-kami", label: "Tentang Kami", icon: Info },
+];
 
-export default function page() {
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const open = Boolean(menuAnchor);
+  const closeMenu = () => setMenuAnchor(null);
+  const pathname = usePathname();
 
-  const router = useRouter()
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll(); // sync state when page is loaded already scrolled
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const [open, setOpen] = useState<boolean>(false);
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname?.startsWith(href);
 
   return (
-    <nav className="bg-white z-20">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between z-10">
-          <div className="absolute inset-y-0 left-0 z-20 flex items-center sm:hidden">
-            {/* <!-- Mobile menu button--> */}
-            <button
-              onClick={() => setOpen(!open)}
-              type="button"
-              className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
-            >
-              <span className="absolute -inset-0.5"></span>
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="block h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-              <svg
-                className="hidden h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start z-10">
-            <div className="flex flex-shrink-0 items-center">
-              <Image className="h-8 w-auto" src={Icon} alt="Your Company" />
-            </div>
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                <Link
-                  href={"/"}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-700 hover:text-white"
-                >
-                  Beranda
-                </Link>
-                <Link
-                  href={"/pendataan"}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-700 hover:text-white"
-                >
-                  Pendataan
-                </Link>
-                <Link
-                  href={"/laporan"}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-700 hover:text-white"
-                >
-                  Laporan Kegiatan
-                </Link>
-                <Link
-                  href={"/tentang-kami"}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-700 hover:text-white"
-                >
-                  Tentang Kami
-                </Link>
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        scrolled
+          ? "border-b border-border/40 bg-background/70 shadow-sm backdrop-blur-md supports-[backdrop-filter]:bg-background/60"
+          : "border-b border-transparent bg-transparent"
+      )}
+    >
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo — circle background only while navbar is transparent */}
+        <Link
+          href="/"
+          aria-label="Si Penyu - Beranda"
+          className={cn(
+            "flex shrink-0 items-center justify-center rounded-full transition-all duration-300",
+            scrolled
+              ? "bg-transparent p-0 ring-0"
+              : "bg-background/80 p-1.5 shadow-md ring-1 ring-primary/20"
+          )}
+        >
+          <Image
+            src={Icon}
+            alt="Si Penyu"
+            priority
+            className="h-8 w-8 object-contain sm:h-9 sm:w-9"
+          />
+        </Link>
 
-              </div>
-            </div>
-          </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {/* <!-- Profile dropdown --> */}
-            <Link href="/login">
-              <div className="relative ml-3">
-                <div>
-                  <Button
-                    type="button"
-                    onClick={() => router.push("/login")}
-                    className="text-white  font-bold text-lg hover:bg-gray-800 hover:text-gray-400">
-                    Masuk
-                  </Button>
-                </div>
-              </div>
+        {/* Desktop & tablet landscape menu */}
+        <nav className="hidden items-center gap-1 md:flex lg:gap-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "hover:bg-accent hover:text-accent-foreground",
+                isActive(link.href)
+                  ? "text-primary"
+                  : "text-foreground/80"
+              )}
+            >
+              {link.label}
             </Link>
-          </div>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <Button asChild size="sm" className="hidden md:inline-flex">
+            <Link href="/login">Masuk</Link>
+          </Button>
+
+          {/* Mobile & tablet portrait menu (Material UI dropdown) */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            aria-label={open ? "Tutup menu" : "Buka menu"}
+            aria-controls={open ? "mobile-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open}
+            onClick={(e) => setMenuAnchor(open ? null : e.currentTarget)}
+          >
+            {open ? <X className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+          </Button>
+          <Menu
+            id="mobile-menu"
+            anchorEl={menuAnchor}
+            open={open}
+            onClose={closeMenu}
+            disableScrollLock
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+            slotProps={{
+              paper: {
+                elevation: 8,
+                sx: {
+                  mt: 1,
+                  minWidth: 240,
+                  borderRadius: 3,
+                  bgcolor: "hsl(var(--popover))",
+                  color: "hsl(var(--popover-foreground))",
+                  border: "1px solid hsl(var(--border))",
+                },
+              },
+            }}
+            sx={{ display: { md: "none" } }}
+          >
+            {navLinks.map(({ href, label, icon: LinkIcon }) => {
+              const active = isActive(href);
+              return (
+                <MenuItem
+                  key={href}
+                  component={Link}
+                  href={href}
+                  selected={active}
+                  onClick={closeMenu}
+                  sx={{
+                    mx: 1,
+                    my: 0.25,
+                    py: 1.25,
+                    borderRadius: 2,
+                    color: active ? "hsl(var(--primary))" : "inherit",
+                    "&.Mui-selected, &.Mui-selected:hover": {
+                      bgcolor: "hsl(var(--primary) / 0.12)",
+                    },
+                    "&:hover": { bgcolor: "hsl(var(--accent))" },
+                  }}
+                >
+                  <ListItemIcon sx={{ color: "inherit" }}>
+                    <LinkIcon className="h-5 w-5" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={label}
+                    slotProps={{
+                      primary: { fontSize: 15, fontWeight: active ? 600 : 500 },
+                    }}
+                  />
+                </MenuItem>
+              );
+            })}
+            <Divider sx={{ my: 1, borderColor: "hsl(var(--border))" }} />
+            <MenuItem
+              component={Link}
+              href="/login"
+              onClick={closeMenu}
+              sx={{
+                mx: 1,
+                mb: 0.5,
+                py: 1.25,
+                borderRadius: 2,
+                justifyContent: "center",
+                fontWeight: 600,
+                bgcolor: "hsl(var(--primary))",
+                color: "hsl(var(--primary-foreground))",
+                "&:hover": { bgcolor: "hsl(var(--primary) / 0.9)" },
+              }}
+            >
+              <LogIn className="mr-2 h-4 w-4" />
+              Masuk
+            </MenuItem>
+          </Menu>
         </div>
       </div>
-
-      {/* <!-- Mobile menu, show/hide based on menu state. --> */}
-      {open && (
-        <div
-          className={`sm:hidden z-20 absolute top-16 left-0 w-full bg-white shadow-md transition-all duration-500 ease-in-out ${open ? "max-h-60 opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}
-          id="mobile-menu"
-        >
-          <div className="flex flex-col space-y-1 px-4 pb-4 pt-2">
-            <Link
-              href="/"
-              className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100"
-            >
-              Beranda
-            </Link>
-            <Link
-              href="/pendataan"
-              className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100"
-            >
-              Pendataan
-            </Link>
-                            <Link
-                  href={"/laporan"}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-700 hover:text-white"
-                >
-                  Laporan Kegiatan
-                </Link>
-            <Link
-              href="/tentang-kami"
-              className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100"
-            >
-              Tentang Kami
-            </Link>
-          </div>
-        </div>
-      )}
-    </nav>
+    </header>
   );
 }

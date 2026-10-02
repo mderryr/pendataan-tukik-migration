@@ -1,5 +1,5 @@
-import Navbar from "@/components/another/navbar-all.component";
-import Footer from "@/components/another/footer";
+// import Navbar from "@/components/another/navbar-all.component";
+// import Footer from "@/components/another/footer";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const reports = [
 export default function ReportPage() {
   return (
     <Suspense fallback={<Loading />}>
-      <Navbar />
+      {/* <Navbar /> */}
       
       <main className="container mx-auto py-12 px-4">
         {/* Judul + Deskripsi */}
@@ -71,7 +71,7 @@ export default function ReportPage() {
         </div>
       </main>
 
-      <Footer />
+      {/* <Footer /> */}
     </Suspense>
   );
 }

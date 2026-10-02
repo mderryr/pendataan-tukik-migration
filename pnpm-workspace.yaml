@@ -1,28 +1,14 @@
 allowBuilds:
-  '@firebase/util': set this to true or false
-  '@parcel/watcher': set this to true or false
-  '@prisma/engines': set this to true or false
-  '@tsparticles/engine': set this to true or false
+  '@firebase/util': false
+  '@parcel/watcher': false
+  '@prisma/engines': false
+  '@tsparticles/engine': false
   '@vercel/speed-insights': set this to true or false
-  canvas: set this to true or false
-  core-js: set this to true or false
-  core-js-pure: set this to true or false
-  esbuild: set this to true or false
-  protobufjs: set this to true or false
-  puppeteer: set this to true or false
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
-onlyBuiltDependencies:
-  - '@firebase/util'
-  - '@parcel/watcher'
-  - '@prisma/engines'
-  - '@tsparticles/engine'
-  - '@vercel/speed-insights'
-  - canvas
-  - core-js
-  - core-js-pure
-  - esbuild
-  - protobufjs
-  - puppeteer
-  - sharp
-  - unrs-resolver
+  canvas: false
+  core-js: false
+  core-js-pure: false
+  esbuild: false
+  protobufjs: false
+  puppeteer: false
+  sharp: false
+  unrs-resolver: false

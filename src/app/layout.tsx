@@ -12,6 +12,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import moment from "moment";
+import Navbar from "@/components/another/navbar-all.component";
+import Footer from "@/components/another/footer";
 
 const inter = Poppins({
   weight: "200",
@@ -54,7 +56,9 @@ export default function RootLayout({
           disableTransitionOnChange
         > */}
         <ProviderApp>
-          {children}
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
           <Toaster />
           <SpeedInsights />
           <Analytics />

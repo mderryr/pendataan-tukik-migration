@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import Loading from "./loading";
 import Navbar from "@/components/another/navbar-all.component";
-import Footer from "@/components/another/footer";
+// import Footer from "@/components/another/footer";
 import ScrollToTop from "@/components/another/scrollToTop.component";
 // import { ConstructionRedirect } from 'Pending/utils/construction'
 // import {
@@ -33,11 +33,11 @@ export default async function Pendataan() {
   return (
     // <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<Loading />}>
-        {process.env.UNDERCONSTRUCTION ? "" : <Navbar />}
+        {/* {process.env.UNDERCONSTRUCTION ? "" : <Navbar />} */}
         {/* <ViewPedataanAll /> */}
         <UnderConstructiom />
         <ScrollToTop />
-        {process.env.UNDERCONSTRUCTION ? "" : <Footer />}
+        {/* {process.env.UNDERCONSTRUCTION ? "" : <Footer />} */}
       </Suspense>
     // </HydrationBoundary>
   );
