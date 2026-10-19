@@ -125,6 +125,9 @@ importers:
       '@react-icons/all-files':
         specifier: ^4.1.0
         version: 4.1.0(react@18.3.1)
+      '@react-leaflet/core':
+        specifier: 2.1.0
+        version: 2.1.0(leaflet@1.9.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-pdf/renderer':
         specifier: ^4.1.2
         version: 4.9.0(react@18.3.1)
@@ -260,6 +263,9 @@ importers:
       jspdf:
         specifier: ^2.5.2
         version: 2.5.2
+      leaflet:
+        specifier: 1.9.4
+        version: 1.9.4
       lottie-react:
         specifier: ^2.4.1
         version: 2.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -283,13 +289,16 @@ importers:
         version: 16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0)
       next-auth:
         specifier: ^5.0.0-beta.4
-        version: 5.0.0-beta.32(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0))(react@18.3.1)
+        version: 5.0.0-beta.32(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0))(nodemailer@10.1.6)(react@18.3.1)
       next-pwa:
         specifier: ^5.6.0
         version: 5.6.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(esbuild@0.25.12)(html-minifier-terser@6.1.0)(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0))(postcss@8.5.28)(supports-color@8.1.1)(webpack@5.111.1(clean-css@5.3.3)(esbuild@0.25.12)(html-minifier-terser@6.1.0)(postcss@8.5.28)(sharp@0.33.5))
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      nodemailer:
+        specifier: ^10.1.6
+        version: 10.1.6
       pdf-lib:
         specifier: ^1.17.1
         version: 1.17.1
@@ -317,6 +326,9 @@ importers:
       react-icons:
         specifier: ^5.2.1
         version: 5.7.0(react@18.3.1)
+      react-leaflet:
+        specifier: 4.2.1
+        version: 4.2.1(leaflet@1.9.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-pdf:
         specifier: ^10.2.0
         version: 10.5.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -411,9 +423,15 @@ importers:
       '@types/bootstrap':
         specifier: ^5.2.10
         version: 5.2.11
+      '@types/leaflet':
+        specifier: 1.9.12
+        version: 1.9.12
       '@types/node':
         specifier: ^22.2.0
         version: 22.20.4
+      '@types/nodemailer':
+        specifier: ^8.0.2
+        version: 8.0.2
       '@types/react-vis':
         specifier: ^1.11.15
         version: 1.11.15
@@ -3541,6 +3559,13 @@ packages:
     peerDependencies:
       react: '*'
 
+  '@react-leaflet/core@2.1.0':
+    resolution: {integrity: sha512-Qk7Pfu8BSarKGqILj4x7bCSZ1pjuAPZ+qmRwH5S7mDS91VSbVVsJSrW4qA+GPrro8t69gFYVMWb1Zc4yFmPiVg==}
+    peerDependencies:
+      leaflet: ^1.9.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+
   '@react-pdf/fns@3.1.3':
     resolution: {integrity: sha512-0I7pApDr1/RLAKbizuLy/IHTEa93LSPy/bEwYniboC3Xqnp6Od8xFJKbKEzGw2wh/5zKFFwl00g4t9RwgIMc3w==}
 
@@ -4237,6 +4262,9 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
+  '@types/geojson@7946.0.16':
+    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
+
   '@types/glob@7.2.0':
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
 
@@ -4263,6 +4291,9 @@ packages:
   '@types/jsonwebtoken@9.0.10':
     resolution: {integrity: sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA==}
 
+  '@types/leaflet@1.9.12':
+    resolution: {integrity: sha512-BK7XS+NyRI291HIo0HCfE18Lp8oA30H1gpi1tf0mF3TgiCEzanQjOqNZ4x126SXzzi2oNSZhZ5axJp1k0iM6jg==}
+
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
 
@@ -4277,6 +4308,9 @@ packages:
 
   '@types/node@22.20.4':
     resolution: {integrity: sha512-zJRE40jpHtKqE/C4fgHrAKQLJuSpzEnP9ff9Y7YtoR3Wd2pwqzlekDeEuUQXjRd+QCYnVnNwuJYmhdk9XV8gvA==}
+
+  '@types/nodemailer@8.0.2':
+    resolution: {integrity: sha512-c7M5ox8p0nEOfbJ2E9Qcmt8/QCu/VzsiAhzBiZbvky2PhKZDHpKB3sQHBM5MEZNkCfBOaS6S9//AGPRTNB7IaA==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -7162,6 +7196,9 @@ packages:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
 
+  leaflet@1.9.4:
+    resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
+
   leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
     engines: {node: '>=6'}
@@ -7698,6 +7735,10 @@ packages:
   node-releases@2.0.57:
     resolution: {integrity: sha512-kQK9LGGFiHtrWiNhZtA7Qbw17AQz+dmsEKODRIVTXA9+e5MS/2gZEBhYJt13GrAz5/IOZKddH/0Z3TP/Zgo+yw==}
     engines: {node: '>=18'}
+
+  nodemailer@10.1.6:
+    resolution: {integrity: sha512-8j/UEmA4AXr51URr3Ob0h+RCBtr0NKJ76Y2P9wJT6Eu3dRyruj2ULh2e6aiKrGg8nlUj1oX6N5h8dHA82EouaQ==}
+    engines: {node: '>=20.0.0'}
 
   nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
@@ -8334,6 +8375,13 @@ packages:
 
   react-is@19.3.0:
     resolution: {integrity: sha512-UpMYezM4v5/18F28aC66AEsjXIgE02kyEMH6yLdgLXu/UTfa1Ntwck/nNLrbqJsEXW7gPb0coNO9FQse9WTovA==}
+
+  react-leaflet@4.2.1:
+    resolution: {integrity: sha512-p9chkvhcKrWn/H/1FFeVSqLdReGwn2qmiobOQGO3BifX+/vV/39qhY8dGqbdcPh1e6jxh/QHriLXr7a4eLFK4Q==}
+    peerDependencies:
+      leaflet: ^1.9.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
 
   react-number-format@5.4.5:
     resolution: {integrity: sha512-y8O2yHHj3w0aE9XO8d2BCcUOOdQTRSVq+WIuMlLVucAm5XNjJAy+BoOJiuQMldVYVOKTMyvVNfnbl2Oqp+YxGw==}
@@ -9911,13 +9959,15 @@ snapshots:
       jsonpointer: 5.0.1
       leven: 3.1.0
 
-  '@auth/core@0.41.3':
+  '@auth/core@0.41.3(nodemailer@10.1.6)':
     dependencies:
       '@panva/hkdf': 1.2.1
       jose: 6.2.12
       oauth4webapi: 3.8.8
       preact: 10.24.3
       preact-render-to-string: 6.5.11(preact@10.24.3)
+    optionalDependencies:
+      nodemailer: 10.1.6
 
   '@axiomhq/js@1.0.0-rc.3':
     dependencies:
@@ -13141,6 +13191,12 @@ snapshots:
     dependencies:
       react: 18.3.1
 
+  '@react-leaflet/core@2.1.0(leaflet@1.9.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      leaflet: 1.9.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@react-pdf/fns@3.1.3': {}
 
   '@react-pdf/font@4.1.2':
@@ -14153,6 +14209,8 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
+  '@types/geojson@7946.0.16': {}
+
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 5.1.2
@@ -14180,6 +14238,10 @@ snapshots:
       '@types/ms': 2.1.0
       '@types/node': 22.20.4
 
+  '@types/leaflet@1.9.12':
+    dependencies:
+      '@types/geojson': 7946.0.16
+
   '@types/long@4.0.2':
     optional: true
 
@@ -14192,6 +14254,10 @@ snapshots:
   '@types/node@22.20.4':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/nodemailer@8.0.2':
+    dependencies:
+      '@types/node': 22.20.4
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -17615,6 +17681,8 @@ snapshots:
     dependencies:
       readable-stream: 2.3.8
 
+  leaflet@1.9.4: {}
+
   leven@3.1.0: {}
 
   levn@0.4.1:
@@ -17939,11 +18007,13 @@ snapshots:
 
   new-github-issue-url@0.2.1: {}
 
-  next-auth@5.0.0-beta.32(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0))(react@18.3.1):
+  next-auth@5.0.0-beta.32(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0))(nodemailer@10.1.6)(react@18.3.1):
     dependencies:
-      '@auth/core': 0.41.3
+      '@auth/core': 0.41.3(nodemailer@10.1.6)
       next: 16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0)
       react: 18.3.1
+    optionalDependencies:
+      nodemailer: 10.1.6
 
   next-pwa@5.6.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(esbuild@0.25.12)(html-minifier-terser@6.1.0)(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@22.20.4)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.105.0))(postcss@8.5.28)(supports-color@8.1.1)(webpack@5.111.1(clean-css@5.3.3)(esbuild@0.25.12)(html-minifier-terser@6.1.0)(postcss@8.5.28)(sharp@0.33.5)):
     dependencies:
@@ -18072,6 +18142,8 @@ snapshots:
       webpack: 5.111.1(clean-css@5.3.3)(esbuild@0.25.12)(html-minifier-terser@6.1.0)(postcss@8.5.28)(sharp@0.33.5)
 
   node-releases@2.0.57: {}
+
+  nodemailer@10.1.6: {}
 
   nopt@5.0.0:
     dependencies:
@@ -18766,6 +18838,13 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@19.3.0: {}
+
+  react-leaflet@4.2.1(leaflet@1.9.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@react-leaflet/core': 2.1.0(leaflet@1.9.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      leaflet: 1.9.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   react-number-format@5.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

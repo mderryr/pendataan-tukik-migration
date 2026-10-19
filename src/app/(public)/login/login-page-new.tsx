@@ -1,132 +1,133 @@
-// "use client";
+"use client";
 
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import { SubmitHandler, useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useMutation } from "@tanstack/react-query";
-// import useStatusUtils from "@/utils/status-toast.utils";
-// import {
-//   Form,
-//   FormControl,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// import { UserLoginZod, UserLoginDOT } from "@/types";
-// import { Button } from "@/components/ui/button";
-// import { login } from "@/services/login/auth";
-// import { useRouter } from "next/navigation";
-// import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signInWithCustomToken } from "firebase/auth";
+import { getFirebaseAuth } from "@/env/firebase.connect";
+import { FIREBASE_ENABLED } from "@/env/firebase.flag";
+import { loginAction, resendVerificationAction } from "@/services/auth/actions";
+import { loginSchema, type LoginInput } from "@/services/auth/schema";
+import AuthCard from "@/components/auth/auth-card.component";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import useStatusUtils from "@/utils/status-toast.utils";
 
-// export default function LoginForm() {
-//   const router = useRouter();
-//   const { onCustomMessage } = useStatusUtils();
-//   const form = useForm<UserLoginDOT>({
-//     resolver: zodResolver(UserLoginZod),
-//     defaultValues: {
-//       userName: "",
-//     },
-//     mode: "onChange",
-//   });
-//   const LoginMutation = useMutation({
-//     mutationFn: async (dto: any) => await login(dto),
-//     onSuccess: () => {
-//       onCustomMessage({
-//         Message: "Berhasil masuk, Selamat Datang",
-//         tittle: "Berhasil",
-//         variant: "default",
-//       });
-//       router.push("/admin");
-//     },
-//     onError: () =>
-//       onCustomMessage({
-//         Message: "Gagal masuk, Silahkan coba lagi",
-//         tittle: "Gagal",
-//         variant: "destructive",
-//       }),
-//   });
+// next = halaman yang tadi dibuka sebelum diarahkan ke login (kalau ada)
+export default function LoginForm({ next }: { next: string | null }) {
+  const router = useRouter();
+  const { onCustomMessage } = useStatusUtils();
+  const [error, setError] = useState<{ message: string; unverified: boolean } | null>(null);
+  const [resending, setResending] = useState(false);
 
-//   const onSubmit: SubmitHandler<UserLoginDOT> = (values) => {
-//     // console.log("masuk");
+  const form = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { identifier: "", password: "" },
+  });
 
-//     const createDto: UserLoginDOT = {
-//       userName: values.userName,
-//       password: values.password,
-//     };
-//     // console.log(createDto);
-//     LoginMutation.mutate(createDto);
-//   };
+  const onSubmit: SubmitHandler<LoginInput> = async (values) => {
+    setError(null);
+    try {
+      const result = await loginAction(values);
+      if (!result.ok) {
+        setError({ message: result.message, unverified: result.code === "unverified" });
+        return;
+      }
+      // Login juga di Firebase browser supaya Firestore bisa dipakai (termasuk saat offline)
+      if (FIREBASE_ENABLED) await signInWithCustomToken(getFirebaseAuth(), result.customToken);
+      onCustomMessage({ Message: "Berhasil masuk, selamat datang", tittle: "Berhasil", variant: "default" });
+      router.replace(next ?? result.redirectTo);
+      router.refresh();
+    } catch {
+      setError({ message: "Tidak bisa terhubung. Periksa koneksi internet kamu.", unverified: false });
+    }
+  };
 
-//   return (
-//     <Card className="mx-auto max-w-sm shadow-[0_2.8px_2.2px_rgba(0,_0,_0,_0.034),_0_6.7px_5.3px_rgba(0,_0,_0,_0.048),_0_12.5px_10px_rgba(0,_0,_0,_0.06),_0_22.3px_17.9px_rgba(0,_0,_0,_0.072),_0_41.8px_33.4px_rgba(0,_0,_0,_0.086),_0_100px_80px_rgba(0,_0,_0,_0.12)]">
-//       <CardHeader>
-//         <CardTitle className="text-2xl">Masuk</CardTitle>
-//         <CardDescription>
-//           Silahkan masukan Username dan Password dibawah
-//         </CardDescription>
-//       </CardHeader>
-//       <CardContent>
-//         <Form {...form}>
-//           <form className="space-y-4 mx-6">
-//             <FormField
-//               name="userName"
-//               control={form.control}
-//               render={({ field }) => (
-//                 <FormItem>
-//                   <FormLabel>Username</FormLabel>
-//                   <FormControl>
-//                     <Input
-//                       placeholder="Silahkan mengisi Username..."
-//                       {...field}
-//                     />
-//                   </FormControl>
-//                   <FormMessage />
-//                 </FormItem>
-//               )}
-//             />{" "}
-//             <FormField
-//               name="password"
-//               control={form.control}
-//               render={({ field }) => (
-//                 <FormItem>
-//                   <FormLabel>Password</FormLabel>
-//                   <FormControl>
-//                     <Input
-//                       type="password"
-//                       placeholder="Silahkan mengisi password.."
-//                       {...field}
-//                     />
-//                   </FormControl>
-//                   <FormMessage />
-//                 </FormItem>
-//               )}
-//             />
-//             <Button
-//               className="w-full"
-//               type="submit"
-//               disabled={form.formState.isSubmitting || LoginMutation.isPending}
-//               onClick={form.handleSubmit(onSubmit)}
-//             >
-//               Masuk
-//             </Button>
-//           </form>
-//         </Form>
-//         <div className="mt-5 0space-y-4 mx-6">
-//           <Link href={"/"}>
-//             <Button variant="outline" className="w-full">
-//               Kembali
-//             </Button>
-//           </Link>
-//         </div>
-//       </CardContent>
-//     </Card>
-//   );
-// }
+  const onResend = async () => {
+    setResending(true);
+    try {
+      const result = await resendVerificationAction(form.getValues());
+      onCustomMessage(
+        result.ok
+          ? { Message: "Email verifikasi sudah dikirim ulang", tittle: "Terkirim", variant: "default" }
+          : { Message: result.message, tittle: "Gagal", variant: "destructive" }
+      );
+    } finally {
+      setResending(false);
+    }
+  };
+
+  return (
+    <AuthCard title="Masuk" description="Masukkan email atau username dan password kamu">
+      <Form {...form}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>
+                {error.message}
+                {error.unverified && (
+                  <Button
+                    type="button"
+                    variant="link"
+                    className="h-auto p-0 block"
+                    disabled={resending}
+                    onClick={onResend}
+                  >
+                    {resending ? "Mengirim..." : "Kirim ulang email verifikasi"}
+                  </Button>
+                )}
+              </AlertDescription>
+            </Alert>
+          )}
+          <FormField
+            name="identifier"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email atau Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="nama@email.com atau username" autoComplete="username" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="password"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center justify-between">
+                  <FormLabel>Password</FormLabel>
+                  <Link href="/lupa-password" className="text-sm underline-offset-4 hover:underline">
+                    Lupa password?
+                  </Link>
+                </div>
+                <FormControl>
+                  <Input type="password" autoComplete="current-password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? "Memproses..." : "Masuk"}
+          </Button>
+        </form>
+      </Form>
+      <div className="mt-5 space-y-1 text-center text-sm">
+        <p>
+          Kelompok konservasi baru?{" "}
+          <Link href="/daftar" className="underline underline-offset-4">
+            Daftarkan tempat
+          </Link>
+        </p>
+        <p className="text-muted-foreground">Anggota tim? Minta pengelola tempatmu membuatkan akun.</p>
+      </div>
+    </AuthCard>
+  );
+}

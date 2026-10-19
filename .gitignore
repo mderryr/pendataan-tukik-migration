@@ -49,3 +49,11 @@ war-machine-lenovo.pub
 
 .kiro/*
 .information-ai/*
+
+# Firebase
+firebase.json
+firestore.rules
+
+# AGENTS
+AGENTS.md
+CLAUDE.md

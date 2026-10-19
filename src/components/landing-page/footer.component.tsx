@@ -32,9 +32,10 @@ interface ContactInfo {
 }
 
 const quickLinks: FooterLink[] = [
+  { href: "/", label: "Beranda" },
   { href: "/tentang-kami", label: "Tentang" },
+  { href: "/pendataan", label: "Pendataan" },
   { href: "/laporan", label: "Laporan" },
-  { href: "/#kontak", label: "Kontak" },
 ];
 
 const socialLinks: SocialLink[] = [

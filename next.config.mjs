@@ -42,6 +42,15 @@ const nextConfig = {
   },
   env: {
     SECREATKEY: process.env.SECREATKEY,
+    // Config Firebase client (bukan rahasia, memang dibutuhkan di browser)
+    APIKEY: process.env.APIKEY,
+    AUTHDOMAIN: process.env.AUTHDOMAIN,
+    PROJECTID: process.env.PROJECTID,
+    STORAGEBUCKER: process.env.STORAGEBUCKER,
+    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID,
+    APPID: process.env.APPID,
+    // Opsional: tanpa key, pemilih lokasi memakai GPS / tempel koordinat
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
   // runtime: 'edge',
   reactStrictMode: true,

@@ -1,77 +1,64 @@
-// import Navbar from "@/components/another/navbar-all.component";
-// import Footer from "@/components/another/footer";
-import { Suspense } from "react";
-import Loading from "./loading";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { listLaporanTerbaru } from "@/services/laporan/laporan";
 
-// Dummy data
-const reports = [
-  {
-    id: 1,
-    title: "Laporan Status dan Kecenderungan Keanekaragaman Hayati",
-    creator: "Pertamina Patra NiagaPT Pertamina Patra Niaga Fuel Terminal Madiun",
-    date: "8 Agustus 2025",
-    link : "https://drive.google.com/file/d/1Fl_yDZh77226uZ6SEKlq_QIeygvwyyvf/view?usp=sharing"
-  },
-];
+export const metadata: Metadata = { title: "Laporan" };
 
-export default function ReportPage() {
+const tanggalTerbit = (iso: string) =>
+  new Date(iso).toLocaleDateString("id-ID", { dateStyle: "long", timeZone: "Asia/Jakarta" });
+
+// Laporan bulanan & tahunan yang diterbitkan tempat konservasi
+export default async function LaporanPublikPage() {
+  const daftar = await listLaporanTerbaru();
+
   return (
-    <Suspense fallback={<Loading />}>
-      {/* <Navbar /> */}
-      
-      <main className="container mx-auto py-12 px-4">
-        {/* Judul + Deskripsi */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-            Daftar Laporan
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Berikut adalah daftar laporan terbaru yang telah dibuat. Klik tombol di bawah untuk melihat detail lengkap.
-          </p>
-        </div>
+    <section className="container mx-auto px-4 py-12">
+      <div className="mb-10 text-center">
+        <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">Daftar Laporan</h1>
+        <p className="mx-auto max-w-2xl text-muted-foreground">
+          Laporan bulanan dan tahunan pendataan penyu dari tempat-tempat konservasi. Bisa diunduh sebagai PDF atau
+          JSON.
+        </p>
+      </div>
 
-        {/* Grid Card — Lurus seperti berita */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reports.map((report) => (
-            <Card
-              key={report.id}
-              className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300"
-            >
+      {!daftar.length ? (
+        <p className="rounded-md border border-dashed p-10 text-center text-muted-foreground">
+          Belum ada laporan yang diterbitkan.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {daftar.map((laporan) => (
+            <Card key={laporan.id} className="flex h-full flex-col transition-shadow hover:shadow-lg">
               <CardHeader>
-                <CardTitle className="line-clamp-2">{report.title}</CardTitle>
-              </CardHeader>
-
-              <CardContent className="flex-1">
-                <CardDescription className="space-y-1">
-                  <p className="text-sm">
-                    <span className="font-medium">Pembuat:</span> {report.creator}
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-medium">Tanggal:</span> {report.date}
-                  </p>
+                <Badge variant="secondary" className="w-fit">
+                  {laporan.periode.jenis === "bulanan" ? "Bulanan" : "Tahunan"}
+                </Badge>
+                <CardTitle className="line-clamp-2 text-lg">{laporan.judul}</CardTitle>
+                <CardDescription>
+                  {laporan.tempatNama} · {laporan.kabupaten}
                 </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 text-sm text-muted-foreground">
+                <p>
+                  {laporan.isi.ringkasan.telurDiselamatkan} telur diselamatkan ·{" "}
+                  {laporan.isi.ringkasan.tukikDilepas} tukik dilepas
+                </p>
+                <p className="mt-1 text-xs">
+                  Diterbitkan {tanggalTerbit(laporan.diterbitkanPada)} · versi {laporan.versi}
+                </p>
               </CardContent>
-
-              <CardFooter className="mt-auto">
+              <CardFooter>
                 <Button variant="outline" className="w-full" asChild>
-                  <a href={report.link}>Lihat Detail</a>
+                  <Link href={`/laporan/${laporan.id}`}>Lihat Laporan</Link>
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
-      </main>
-
-      {/* <Footer /> */}
-    </Suspense>
+      )}
+    </section>
   );
 }

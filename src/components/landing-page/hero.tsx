@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { cn } from "@/utils/cn-tools";
 import { ArrowRight, Heart } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -10,7 +9,7 @@ export default function Hero() {
     return (
         <section
             id="main"
-            className="relative flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-teal-900 via-teal-800 to-emerald-900 px-4 py-20 md:px-8 lg:px-12"
+            className="relative w-full -mt-20 pt-16 pb-24 md:pb-32 bg-gradient-to-br from-teal-900 via-teal-800 to-emerald-900 px-4"
         >
             <div className="mx-auto max-w-5xl">
                 <motion.div
@@ -20,13 +19,13 @@ export default function Hero() {
                     className="flex flex-col items-center text-center"
                 >
                     {/* Badge */}
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-teal-900/50 px-4 py-1.5 text-sm text-teal-200 backdrop-blur-sm border border-teal-700/50">
+                    <div className="mb-6 mt-20 inline-flex items-center gap-2 rounded-full bg-teal-900/50 px-4 py-1.5 text-sm text-teal-200 backdrop-blur-sm border border-teal-700/50">
                         <Heart className="h-4 w-4" />
                         <span>Konservasi Penyu Indonesia</span>
                     </div>
 
                     {/* Headline */}
-                    <h1 className="mb-6 text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
+                    <h1 className="mb-6 text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl">
                         Lindungi Penyu,{" "}
                         <span className="text-teal-300">Lestarikan Laut</span>
                     </h1>

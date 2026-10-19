@@ -31,9 +31,9 @@ const features = [
 
 export default function FeaturesComponent() {
   return (
-    <section className="w-full py-16 bg-gradient-to-b from-white to-teal-50 dark:from-black dark:to-teal-950/20">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-12">
+    <section className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-teal-50 dark:from-black dark:to-teal-950/20">
+      <div className="container mx-auto max-w-6xl px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-teal-900 dark:text-teal-100 sm:text-4xl">
             Fitur Unggulan
           </h2>
@@ -43,7 +43,7 @@ export default function FeaturesComponent() {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-3 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <Card
               key={index}

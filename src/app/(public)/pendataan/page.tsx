@@ -1,45 +1,36 @@
-// import Navbar from "@/component/navbar-all";
-// import ViewPedataanAll from "./pendataan-all.view";
-import { Suspense } from "react";
-import Loading from "./loading";
-import Navbar from "@/components/another/navbar-all.component";
-// import Footer from "@/components/another/footer";
-import ScrollToTop from "@/components/another/scrollToTop.component";
-// import { ConstructionRedirect } from 'Pending/utils/construction'
-// import {
-//   dehydrate,
-//   HydrationBoundary,
-//   QueryClient,
-// } from "@tanstack/react-query";
-// import { queryKeys } from "@/services";
-// import { getReportByYear, getReportMonth } from "@/services/report";
-import UnderConstructiom from '@/view/asset/under-construction'
+import type { Metadata } from "next";
+import TempatKartu from "@/components/tempat/tempat-kartu.component";
+import { laporanSorotan } from "@/services/laporan/hitung";
+import { listLaporanTempat } from "@/services/laporan/laporan";
+import { listTempat } from "@/services/tempat/tempat";
 
+export const metadata: Metadata = { title: "Pendataan" };
 
-export default async function Pendataan() {
-  // ConstructionRedirect()
-
-  // const queryClient = new QueryClient();
-  // await queryClient.prefetchQuery({
-  //   queryKey: queryKeys.tahunan.all,
-  //   queryFn: () => getReportByYear(),
-  // });
-
-  // await queryClient.prefetchQuery({
-  //   queryKey: queryKeys.bulanan.all,
-  //   queryFn: () => getReportMonth(),
-  // });
+// Direktori tempat konservasi; tiap tempat menautkan ke /pendataan/{tempat}
+export default async function PendataanPublikPage() {
+  const tempat = (await listTempat()).filter((t) => t.aktif);
+  const laporan = await Promise.all(tempat.map((t) => listLaporanTempat(t.id)));
 
   return (
-    // <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<Loading />}>
-        {/* {process.env.UNDERCONSTRUCTION ? "" : <Navbar />} */}
-        {/* <ViewPedataanAll /> */}
-        <UnderConstructiom />
-        <ScrollToTop />
-        {/* {process.env.UNDERCONSTRUCTION ? "" : <Footer />} */}
-      </Suspense>
-    // </HydrationBoundary>
+    <section className="container mx-auto px-4 py-12">
+      <div className="mb-10 text-center">
+        <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">Tempat Konservasi</h1>
+        <p className="mx-auto max-w-2xl text-muted-foreground">
+          Hasil pendataan penyu dari tiap tempat konservasi. Pilih tempat untuk melihat dan mengunduh laporannya.
+        </p>
+      </div>
+
+      {!tempat.length ? (
+        <p className="rounded-md border border-dashed p-10 text-center text-muted-foreground">
+          Belum ada tempat konservasi yang terdaftar.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {tempat.map((t, i) => (
+            <TempatKartu key={t.id} tempat={t} jumlahLaporan={laporan[i].length} sorotan={laporanSorotan(laporan[i])} />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
-                                                                                                                                    

@@ -34,18 +34,18 @@ const sponsors: Sponsor[] = [
 export default function Sponsors() {
     return (
         <section className={cn(
-            "w-full py-16 bg-gray-100 dark:bg-gray-900 max-md:mt-32"
+            "w-full py-12 md:py-16 bg-gray-100 dark:bg-gray-900"
         )}>
-            <div className="max-w-6xl mx-auto px-4 text-center">
+            <div className="max-w-4xl mx-auto px-4 text-center">
                 <h2 className="text-2xl font-semibold text-black dark:text-white mb-8">
                     Terima kasih atas dukungan dari
                 </h2>
-                <div className="flex flex-wrap justify-center items-center gap-8">
+                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
                     {sponsors.map((sponsor, index) => (
                         <div
                             key={index}
                             className={cn(
-                                "relative w-40 h-20 grayscale",
+                                "relative w-32 h-16 md:w-40 md:h-20 grayscale",
                                 "hover:grayscale-0 transition-all duration-300",
                                 "transform hover:scale-105"
                             )}
@@ -61,7 +61,7 @@ export default function Sponsors() {
                                         src={sponsor.logo}
                                         alt={sponsor.name}
                                         fill
-                                        sizes="160px"
+                                        sizes="(max-width: 768px) 128px, 160px"
                                         className="object-contain"
                                     />
                                 </Link>
@@ -70,7 +70,7 @@ export default function Sponsors() {
                                     src={sponsor.logo}
                                     alt={sponsor.name}
                                     fill
-                                    sizes="160px"
+                                    sizes="(max-width: 768px) 128px, 160px"
                                     className="object-contain"
                                 />
                             )}

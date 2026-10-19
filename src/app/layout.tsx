@@ -9,11 +9,9 @@ import { Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import ProviderApp from "./providers-tanstack";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeProvider } from "@/components/theme-provider";
+// import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import moment from "moment";
-import Navbar from "@/components/another/navbar-all.component";
-import Footer from "@/components/another/footer";
 
 const inter = Poppins({
   weight: "200",
@@ -23,14 +21,76 @@ const inter = Poppins({
 // export const runtime = 'edge'
 
 export const metadata: Metadata = {
-  title: "Pendataan Tukik Indonesia",
-  description:
-    "Sebuah sistem informasi untuk mendata tukik di Indonesia. Untuk pendataan pertama digunakan di pantai kili-kili",
-  applicationName: "Pendataan Tukik",
-  icons:{
-    icon:"/logo-sipenyu.png"
-  }
+  title: {
+    default: "Si Penyu - Konservasi Penyu Indonesia",
+    template: "%s | Si Penyu"
+  },
+  description: "Si Penyu adalah sistem informasi pendataan, pengawasan, dan pelaporan konservasi penyu Indonesia. Dukung upaya pelestarian penyu hijau, penyu belimbing, dan lainnya. konservasi real-time dari lapangan.",
+  keywords: [
+    "konservasi penyu",
+    "penyu indonesia",
+    "pendataan penyu",
+    "tukik",
+    "pelestarian laut",
+    "pantai kili kili",
+    "trenggalek",
+    "pertamina patra niaga",
+    "universitas brawijaya",
+    "conservation",
+    "sea turtle",
+    "turtle monitoring"
+  ],
+  authors: [{ name: "Si Penyu Team", url: "https://sipenyu.id" }],
+  creator: "Si Penyu",
+  publisher: "Si Penyu",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://sipenyu.id"),
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://sipenyu.id",
+    title: "Si Penyu - Konservasi Penyu Indonesia",
+    description: "Sistem informasi pendataan, pengawasan, dan pelaporan konservasi penyu Indonesia. Dukung upaya pelestarian penyu.",
+    siteName: "Si Penyu",
+    images: [
+      {
+        url: "/logo-sipenyu.png",
+        width: 512,
+        height: 512,
+        alt: "Si Penyu Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Si Penyu - Konservasi Penyu Indonesia",
+    description: "Sistem informasi pendataan, pengawasan, dan pelaporan konservasi penyu Indonesia.",
+    images: ["/logo-sipenyu.png"],
+    creator: "@sipenyu",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/logo-sipenyu.png",
+    shortcut: "/logo-sipenyu.png",
+    apple: "/logo-sipenyu.png",
+  },
+  manifest: "/site.webmanifest",
 };
+
 export default function RootLayout({
   children,
 }: {
@@ -41,11 +101,6 @@ export default function RootLayout({
   return (
     <html data-theme="cupcake" lang="en" suppressHydrationWarning >
       <head>
-        <meta property="og:image" content="Link preview image URL" />
-        <meta property="og:site_name" content="Link preview site name" />
-        <meta property="og:title" content="Link preview title" />
-        <meta property="og:description" content="Link preview description" />
-        <meta property="og:url" content="Canonical link preview URL" />
       </head>
 
       <body className=" no-underline ">
@@ -56,9 +111,8 @@ export default function RootLayout({
           disableTransitionOnChange
         > */}
         <ProviderApp>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          {/* Navbar & footer ada di layout masing-masing: (public)/layout.tsx dan [tempat]/layout.tsx */}
+          {children}
           <Toaster />
           <SpeedInsights />
           <Analytics />

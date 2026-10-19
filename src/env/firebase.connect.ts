@@ -1,34 +1,52 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import {requireEnvVar,requireInProduction} from '@/utils/env-reading.utils'
-// var admin = require("firebase-admin");
-// var serviceAccount = require("path/to/serviceAccountKey.json");
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// Firebase client SDK: dipakai komponen client (login ke Firebase + Firestore offline).
+// Diinisialisasi saat pertama dipakai, supaya mode tampilan (FIREBASE_ENABLED = false) tidak menyentuh Firebase.
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import {
+  getFirestore,
+  initializeFirestore,
+  memoryLocalCache,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  type Firestore,
+} from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const isProduction = false
+// Ditulis literal (bukan process.env[name]) supaya Next.js bisa menyisipkan
+// nilainya ke bundle browser lewat `env` di next.config.mjs.
 const firebaseConfig = {
-  apiKey: requireEnvVar("APIKEY"),
-  authDomain: requireEnvVar("AUTHDOMAIN"),
-  projectId: requireEnvVar("PROJECTID"),
-  storageBucket: requireEnvVar("STORAGEBUCKER"),
-  messagingSenderId: requireEnvVar("MESSAGINGSENDERID"),
-  appId: requireEnvVar("APPID"),
-  measurementId: isProduction 
-    ? requireEnvVar("MEASUREMENTID")
-    : requireEnvVar("MEASUREMENTID", true),
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKER,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
+  appId: process.env.APPID,
 };
 
-// console.log(firebaseConfig)
+function getFirebaseApp() {
+  return getApps().length ? getApp() : initializeApp(firebaseConfig);
+}
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+export function getFirebaseAuth() {
+  return getAuth(getFirebaseApp());
+}
 
+let db: Firestore | undefined;
 
-// export const server = admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount)
-// });
+// Cache IndexedDB: data tetap bisa dibaca & ditulis saat sinyal hilang,
+// lalu otomatis tersinkron ke server ketika online lagi.
+export function getFirebaseDb(): Firestore {
+  if (db) return db;
+  const app = getFirebaseApp();
+  try {
+    db = initializeFirestore(app, {
+      localCache:
+        typeof window === "undefined"
+          ? memoryLocalCache()
+          : persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+    });
+  } catch {
+    // Sudah diinisialisasi sebelumnya (mis. saat hot reload)
+    db = getFirestore(app);
+  }
+  return db;
+}
